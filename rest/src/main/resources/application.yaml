@@ -1,0 +1,41 @@
+spring:
+  profiles:
+    active: ${ACTIVE_PROFILE}
+
+  datasource:
+    url: jdbc:postgresql://18.141.203.146:5432/bookstore-db
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+jwt:
+  secret: ${JWT_SECRET}
+  validity: 3600 # the validity within an hour
+
+aws:
+  accessKey: ${AWS_ACCESS_KEY}
+  secretKey: ${AWS_SECRET_KEY}
+  region: ${AWS_REGION}
+#  bucketName: ${AWS_BUCKET_NAME}
+#  folderName: ${AWS_FOLDER_NAME}
+#  url: ${AWS_URL}
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+
+app:
+  frontend:
+    url: http://localhost:4200

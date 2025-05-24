@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: book-store-backend
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bookstore-db
+    username: root
+    password: root
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+
+logging:
+  level:
+    root: info
+    com.sts: debug
+    org.springframework.web: debug
+    org.hibernate: info
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} [%file:%line] - %msg%n"
