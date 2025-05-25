@@ -10,12 +10,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.sts.entity.RoleEntity;
 import com.sts.entity.UserEntity;
+import com.sts.util.enums.UserStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import lombok.extern.slf4j.Slf4j;
 
 @AllArgsConstructor
@@ -36,6 +36,8 @@ public class UserDetailsImpl implements UserDetails {
 
     private String password;
 
+    private UserStatus status;
+
     private Collection<? extends GrantedAuthority> authorities;
 
     public static UserDetailsImpl build(UserEntity userEntity, Set<RoleEntity> roleEntities) {
@@ -48,6 +50,7 @@ public class UserDetailsImpl implements UserDetails {
                 .name(userEntity.getFullName())
                 .email(userEntity.getEmail())
                 .password(userEntity.getPassword())
+                .status(userEntity.getStatus())
                 .authorities(authorities)
                 .build();
     }
@@ -74,7 +77,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return status == UserStatus.ACTIVE;
     }
 
 }

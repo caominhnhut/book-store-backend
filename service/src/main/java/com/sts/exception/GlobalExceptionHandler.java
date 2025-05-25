@@ -1,16 +1,17 @@
 package com.sts.exception;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 import com.sts.model.ResponseData;
-import com.sts.util.ErrorCode;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ControllerAdvice
@@ -24,7 +25,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ResponseData<Error>> handleGlobalException(Exception ex, WebRequest request){
+    public ResponseEntity<ResponseData<Error>> handleGlobalException(Exception ex, WebRequest request) {
         log.error("Server exception: ", ex);
         ResponseData<Error> responseData = handleErrorCode(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
         return ResponseEntity.ok(responseData);
@@ -46,6 +47,13 @@ public class GlobalExceptionHandler {
                 .toList();
 
         ResponseData<Error> responseData = handleErrorCode(HttpStatus.INTERNAL_SERVER_ERROR.value(), String.join(", ", errors));
+        return ResponseEntity.ok(responseData);
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<ResponseData<Error>> handleUsernameNotFoundException(UsernameNotFoundException ex, WebRequest request) {
+        log.error("Username not found error: ", ex);
+        ResponseData<Error> responseData = handleErrorCode(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());
         return ResponseEntity.ok(responseData);
     }
 
