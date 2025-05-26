@@ -49,12 +49,13 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configure(http)) // Enable CORS
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/api/no-auth/**").permitAll()
-                                .requestMatchers("/swagger-ui.html", "/v3/api-docs/", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
-                                .requestMatchers("/api/roles/**", "/api/users/**", "/api/user-roles/**").permitAll()
-                                .anyRequest().authenticated()
+                .authorizeHttpRequests(auth
+                        -> auth.requestMatchers("/api/no-auth/**").permitAll()
+                        .requestMatchers("/swagger-ui.html", "/v3/api-docs/", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                        .requestMatchers("/api/roles/**", "/api/users/**", "/api/user-roles/**").permitAll()
+                        .anyRequest().authenticated()
                 );
 
         http.authenticationProvider(authenticationProvider());

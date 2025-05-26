@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findByEmail(String email) {
         Optional<UserEntity> userEntity = userRepository.findByEmail(email);
-        var user = userMapper.fromUserEntity(userEntity.orElse(null));
+        var user = userEntity.map(userMapper::fromUserEntityWithoutPassword).orElse(null);
         return Optional.ofNullable(user);
     }
 
