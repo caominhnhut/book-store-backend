@@ -21,7 +21,7 @@ public class UserRoleResource {
     private final UserRoleService userRoleService;
 
     @GetMapping
-    public ResponseEntity<List<UserRole>> getAllUserRoles() {
+    public ResponseEntity<List<UserRole>> GETALLUSERROLE() {
         return ResponseEntity.ok(userRoleService.getAllUserRoles());
     }
 
