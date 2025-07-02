@@ -3,7 +3,7 @@ spring:
     name: book-store-backend
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/bookstore-db
+    url: jdbc:postgresql://localhost:5432/bookstoredb
     username: root
     password: root
     driver-class-name: org.postgresql.Driver
