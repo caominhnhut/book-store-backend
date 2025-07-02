@@ -13,18 +13,18 @@ pipeline {
 
     stages {
 
+        stage('Checkout') {
+            steps {
+                // Checkout code from repository
+                checkout scm
+            }
+        }
+
         stage('Info') {
             steps {
                 sh(script: """ whoami;pwd;ls -la """, label: 'Display Info')
             }
         }
-
-//         stage('Checkout') {
-//             steps {
-//                 // Checkout code from repository
-//                 checkout scm
-//             }
-//         }
 
 //         stage('Build') {
 //             steps {
