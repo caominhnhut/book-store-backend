@@ -87,3 +87,6 @@ spring.datasource.password=your_password
 - Flyway (Database Migration)
 - Maven
 - Lombok
+
+##
+Add this for testing 
