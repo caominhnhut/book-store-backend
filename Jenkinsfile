@@ -4,12 +4,13 @@ pipeline {
     }
 
     environment {
-        appUser =  "nhut"
+        appUser =  "jenkins"
         appName = "rest"
         appVersion = "0.0.1-SNAPSHOT"
         appType = "jar"
         processName = "${appName}-${appVersion}.${appType}"
         buildScript = "mvn clean install -DskipTests=true"
+        permissionsScript = "sudo chown -R ${appUser}:${appUser} /rest/target && sudo chmod -R 755 /rest/target"
         runScript = "java -jar /rest/target/${processName}"
 
 
@@ -45,6 +46,8 @@ pipeline {
                              else
                                echo "No process found to kill"
                              fi """, label: 'Terminate existing process if any')
+
+                sh(script: """ ${permissionsScript} """, label: 'Permissions for target directory')
 
                 sh(script: """ ${runScript} """, label: 'Run Application')
             }
