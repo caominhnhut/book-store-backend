@@ -34,7 +34,6 @@
     </dependencies>
 
     <build>
-        <finalName>book-store-backend</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
