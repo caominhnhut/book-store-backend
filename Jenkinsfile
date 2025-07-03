@@ -49,7 +49,7 @@ pipeline {
 
                 sh(script: """ ${permissionsScript} """, label: 'Permissions for target directory')
 
-                sh(script: """ ${runScript} """, label: 'Run Application')
+                sh(script: """ ${runScript} """, label: 'Run Application') // start app
             }
         }
 
