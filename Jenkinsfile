@@ -25,7 +25,7 @@ pipeline {
 
         stage('Info') {
             steps {
-               sh(script: """ whoami;pwd;ls -la """, label: 'Build Application With Maven')
+               sh(script: """ whoami;pwd;ls -la """, label: 'Logging Info')
             }
         }
 
