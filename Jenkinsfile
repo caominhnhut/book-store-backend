@@ -50,13 +50,18 @@ pipeline {
                 sh(script: """ ${permissionsScript} """, label: 'Permissions for target directory')
 
                 sh(script: """
-                            chmod +x load-env.sh
-                            ./load-env.sh
-                        """, label: 'Load environment variables')
-
-                sh(script: """ printenv """, label: 'check env') // print environment variables
-
-                sh(script: """ ${runScript} """, label: 'Run Application') // start app
+                    java -jar \\
+                    -DPOSTGRES_SERVER_IP=${env.POSTGRES_SERVER_IP} \\
+                    -DDB_PORT=${env.DB_PORT} \\
+                    -DPOSTGRES_USER=${env.POSTGRES_USER} \\
+                    -DPOSTGRES_PASSWORD=${env.POSTGRES_PASSWORD} \\
+                    -DJWT_SECRET=${env.JWT_SECRET} \\
+                    -DAWS_ACCESS_KEY=${env.AWS_ACCESS_KEY} \\
+                    -DAWS_SECRET_KEY=${env.AWS_SECRET_KEY} \\
+                    -DAWS_REGION=${env.AWS_REGION} \\
+                    -DEMAIL_USERNAME=${env.EMAIL_USERNAME} \\
+                    -DEMAIL_PASSWORD=${env.EMAIL_PASSWORD} \\
+                    rest/target/${processName}""", label: 'Run Application')
             }
         }
 
