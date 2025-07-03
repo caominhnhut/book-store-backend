@@ -10,7 +10,7 @@ pipeline {
         appType = "jar"
         processName = "${appName}-${appVersion}.${appType}"
         buildScript = "mvn clean install -DskipTests=true"
-        runScript = "java -jar ${processName}"
+        runScript = "java -jar /rest/target/${processName}"
 
 
 //         DOCKER_IMAGE = 'bookstore-backend'
