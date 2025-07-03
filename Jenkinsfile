@@ -45,7 +45,7 @@ pipeline {
                                   sudo kill -9 $pid
                                 else
                                   echo "No process found to kill"
-                                fi """; label: 'Terminate existing process if any')
+                                fi """, label: 'Terminate existing process if any')
 
                sh(script: """ ${runScript} """, label: 'Run Application')
             }
