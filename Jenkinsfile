@@ -66,19 +66,6 @@ pipeline {
             }
         }
 
-//         stage('Test') {
-//             steps {
-//                 // Run tests
-//                 sh 'mvn test'
-//             }
-//             post {
-//                 always {
-//                     // Publish test results
-//                     junit '**/target/surefire-reports/*.xml'
-//                 }
-//             }
-//         }
-
 //         stage('SonarQube Analysis') {
 //             steps {
 //                 // Optional: Run SonarQube analysis
