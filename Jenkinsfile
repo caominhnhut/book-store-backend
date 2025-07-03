@@ -39,7 +39,14 @@ pipeline {
 
         stage('Deploy') {
             steps {
-               sh(script: """ ${killScript} """, label: 'Terminate existing process if any')
+               sh(script: """  pid=$(pgrep -f ${processName} || true)
+                                if [ -n "$pid" ]; then
+                                  echo "Killing process $pid"
+                                  sudo kill -9 $pid
+                                else
+                                  echo "No process found to kill"
+                                fi """; label: 'Terminate existing process if any')
+
                sh(script: """ ${runScript} """, label: 'Run Application')
             }
         }
