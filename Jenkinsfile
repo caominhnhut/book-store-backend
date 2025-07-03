@@ -53,6 +53,7 @@ pipeline {
                     java -jar \\
                     -DPOSTGRES_SERVER_IP=${env.POSTGRES_SERVER_IP} \\
                     -DDB_PORT=${env.DB_PORT} \\
+                    -DDB_NAME=${env.DB_NAME} \\
                     -DPOSTGRES_USER=${env.POSTGRES_USER} \\
                     -DPOSTGRES_PASSWORD=${env.POSTGRES_PASSWORD} \\
                     -DJWT_SECRET=${env.JWT_SECRET} \\
