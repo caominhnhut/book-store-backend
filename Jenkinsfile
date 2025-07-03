@@ -5,7 +5,7 @@ pipeline {
 
     environment {
         appUser =  "nhut"
-        appName = "book-store-backend"
+        appName = "rest"
         appVersion = "0.0.1-SNAPSHOT"
         appType = "jar"
         processName = "${appName}-${appVersion}.${appType}"
