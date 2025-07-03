@@ -62,7 +62,10 @@ pipeline {
                     -DAWS_REGION=${env.AWS_REGION} \\
                     -DEMAIL_USERNAME=${env.EMAIL_USERNAME} \\
                     -DEMAIL_PASSWORD=${env.EMAIL_PASSWORD} \\
-                    rest/target/${processName}""", label: 'Run Application')
+                    rest/target/${processName} > application.log 2>&1 &""", label: 'Run Application')
+
+                    // Wait and verify the application started
+                    sh(script: """ sleep 10 && ps aux | grep java """, label: 'Verify application started')
             }
         }
 
