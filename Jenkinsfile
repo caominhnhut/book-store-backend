@@ -10,8 +10,7 @@ pipeline {
         appType = "jar"
         processName = "${appName}-${appVersion}.${appType}"
         buildScript = "mvn clean install -DskipTests=true"
-        killScript="sudo kill -9 \$(ps -ef | grep ${processName} | grep -v grep | awk '{print \$2}')" // Ensure the port is free before starting the new process
-        runScript = 'sudo su ${appUser} -c "cd ${folderDeploy}; java -jar ${processName}"'
+        runScript = "java -jar ${processName}"
 
 
 //         DOCKER_IMAGE = 'bookstore-backend'
@@ -46,6 +45,7 @@ pipeline {
                              else
                                echo "No process found to kill"
                              fi """, label: 'Terminate existing process if any')
+
                 sh(script: """ ${runScript} """, label: 'Run Application')
             }
         }
