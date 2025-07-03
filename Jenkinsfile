@@ -49,6 +49,11 @@ pipeline {
 
                 sh(script: """ ${permissionsScript} """, label: 'Permissions for target directory')
 
+                sh(script: """
+                            chmod +x load-env.sh
+                            ./load-env.sh
+                        """, label: 'Load environment variables')
+
                 sh(script: """ printenv """, label: 'check env') // print environment variables
 
                 sh(script: """ ${runScript} """, label: 'Run Application') // start app
