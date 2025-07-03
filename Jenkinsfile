@@ -23,12 +23,19 @@ pipeline {
 
     stages {
 
+        stage('Info') {
+            steps {
+               sh(script: """ whoami;pwd;ls -la """, label: 'Build Application With Maven')
+            }
+        }
+
 //         stage('Checkout') {
 //             steps {
 //                 // Checkout code from repository
 //                 checkout scm
 //             }
 //         }
+
 
         stage('Build') {
             steps {
