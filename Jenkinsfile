@@ -3,35 +3,38 @@ pipeline {
         label 'book-store-server-staging'
     }
 
-//     environment {
-//         // Define environment variables
+    environment {
+        appUser =  'nhut'
+        appName = 'book-store-backend'
+        appVersion = '0.0.1-SNAPSHOT'
+        appType = 'jar'
+        processName = "${appName}-${appVersion}.${appType}"
+        folderDeploy = '/home/${appUser}/projects/book-store-backend'
+        buildScript = 'mvn clean package -DskipTests=true'
+
 //         DOCKER_IMAGE = 'bookstore-backend'
 //         DOCKER_TAG = "${env.BUILD_NUMBER}"
 //         DOCKER_REGISTRY = 'your-registry-url' // Replace with your Docker registry URL
 //         MAVEN_OPTS = '-Dmaven.repo.local=.m2/repository'
-//     }
+
+
+
+    }
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                // Checkout code from repository
-                checkout scm
-            }
-        }
-
-        stage('Info') {
-            steps {
-                sh(script: """ whoami;pwd;ls -la """, label: 'Display Info')
-            }
-        }
-
-//         stage('Build') {
+//         stage('Checkout') {
 //             steps {
-//                 // Build the application with Maven
-//                 sh 'mvn clean package -DskipTests'
+//                 // Checkout code from repository
+//                 checkout scm
 //             }
 //         }
+
+        stage('Build') {
+            steps {
+               sh(script: """ ${buildScript} """, label: 'Build Application With Maven')
+            }
+        }
 
 //         stage('Test') {
 //             steps {
