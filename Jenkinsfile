@@ -11,7 +11,7 @@ pipeline {
         processName = "${appName}-${appVersion}.${appType}"
         folderDeploy = "/datas/${appUser}"
         buildScript = "mvn clean install -DskipTests=true"
-        copyScript = "sudo cp target/${processName} ${folderDeploy}/"
+        copyScript = "sudo cp rest/target/${processName} ${folderDeploy}/"
         permsScript = "sudo chown -R ${appUser}. ${folderDeploy}"
         killScript = "sudo kill -9 \$(ps -ef| grep ${processName}| grep -v grep| awk '{print \$2}')" // Ensure the port is free before starting the new process
         runScript = 'sudo su ${appUser} -c "cd ${folderDeploy}; java -jar ${processName}"'
