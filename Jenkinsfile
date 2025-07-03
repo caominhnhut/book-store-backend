@@ -11,7 +11,7 @@ pipeline {
         processName = "${appName}-${appVersion}.${appType}"
         buildScript = "mvn clean install -DskipTests=true"
         permissionsScript = "sudo chown -R ${appUser}:${appUser} rest/target && sudo chmod -R 755 rest/target" // Adjust permissions as needed
-        runScript = "java -jar rest/target/${processName}"
+        runScript = "java -jar rest/target/${processName}" // Run app
 
 
 //         DOCKER_IMAGE = 'bookstore-backend'
