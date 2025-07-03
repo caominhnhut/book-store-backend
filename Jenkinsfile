@@ -43,7 +43,7 @@ pipeline {
         stage('Deploy') {
             steps {
                sh(script: """ ${copyScript} """, label: 'Copy jar file to folderDeploy')
-               sh(script: """ whoami;pwd;ls -la """, label: 'Check folderDeploy')
+               sh(script: """ whoami;pwd;ls -la;cd ~ """, label: 'Check folderDeploy')
                sh(script: """ ${permsScript} """, label: 'Set permissions for folderDeploy')
                sh(script: """ ${killScript} """, label: 'Terminate existing process if any')
                sh(script: """ ${runScript} """, label: 'Run Application')
