@@ -49,6 +49,8 @@ pipeline {
 
                 sh(script: """ ${permissionsScript} """, label: 'Permissions for target directory')
 
+                sh(script: """ printenv """, label: 'check env')
+
                 sh(script: """ ${runScript} """, label: 'Run Application') // start app
             }
         }
