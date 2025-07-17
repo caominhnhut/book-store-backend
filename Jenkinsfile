@@ -39,33 +39,52 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh(script: """  pid=\$(pgrep -f ${processName} || true)
-                             if [ -n "\$pid" ]; then
-                               echo "Killing process \$pid"
-                               sudo kill -9 \$pid
-                             else
-                               echo "No process found to kill"
-                             fi """, label: 'Terminate existing process if any')
 
-                sh(script: """ ${permissionsScript} """, label: 'Permissions for target directory')
+                script {
+                    try {
+                        timeout(time: 5, unit: 'MINUTES') {
+                            env.useChoice = input message: "can it be deployed ?",
+                            parameters: [
+                                choice(name: deploy, choices: 'No\nYes', description: 'Choose yes if you want to deploy the application')
+                            ]
+                        }
+                        if (env.useChoice == 'Yes') {
+                            sh(script: """  pid=\$(pgrep -f ${processName} || true)
+                                                         if [ -n "\$pid" ]; then
+                                                           echo "Killing process \$pid"
+                                                           sudo kill -9 \$pid
+                                                         else
+                                                           echo "No process found to kill"
+                                                         fi """, label: 'Terminate existing process if any')
 
-                sh(script: """
-                    java -jar \\
-                    -DPOSTGRES_SERVER_IP=${env.POSTGRES_SERVER_IP} \\
-                    -DDB_PORT=${env.DB_PORT} \\
-                    -DDB_NAME=${env.DB_NAME} \\
-                    -DPOSTGRES_USER=${env.POSTGRES_USER} \\
-                    -DPOSTGRES_PASSWORD=${env.POSTGRES_PASSWORD} \\
-                    -DJWT_SECRET=${env.JWT_SECRET} \\
-                    -DAWS_ACCESS_KEY=${env.AWS_ACCESS_KEY} \\
-                    -DAWS_SECRET_KEY=${env.AWS_SECRET_KEY} \\
-                    -DAWS_REGION=${env.AWS_REGION} \\
-                    -DEMAIL_USERNAME=${env.EMAIL_USERNAME} \\
-                    -DEMAIL_PASSWORD=${env.EMAIL_PASSWORD} \\
-                    rest/target/${processName} > application.log 2>&1 &""", label: 'Run Application')
+                            sh(script: """ ${permissionsScript} """, label: 'Permissions for target directory')
 
-                    // Wait and verify the application started
-                    sh(script: """ sleep 10 && ps aux | grep java """, label: 'Verify application started')
+                            sh(script: """
+                                        java -jar \\
+                                        -DPOSTGRES_SERVER_IP=${env.POSTGRES_SERVER_IP} \\
+                                        -DDB_PORT=${env.DB_PORT} \\
+                                        -DDB_NAME=${env.DB_NAME} \\
+                                        -DPOSTGRES_USER=${env.POSTGRES_USER} \\
+                                        -DPOSTGRES_PASSWORD=${env.POSTGRES_PASSWORD} \\
+                                        -DJWT_SECRET=${env.JWT_SECRET} \\
+                                        -DAWS_ACCESS_KEY=${env.AWS_ACCESS_KEY} \\
+                                        -DAWS_SECRET_KEY=${env.AWS_SECRET_KEY} \\
+                                        -DAWS_REGION=${env.AWS_REGION} \\
+                                        -DEMAIL_USERNAME=${env.EMAIL_USERNAME} \\
+                                        -DEMAIL_PASSWORD=${env.EMAIL_PASSWORD} \\
+                                        rest/target/${processName} > application.log 2>&1 &""", label: 'Run Application')
+
+                            // Wait and verify the application started
+                            sh(script: """ sleep 10 && ps aux | grep java """, label: 'Verify application started')
+                        } else {
+                            error "Deployment aborted by user"
+                        }
+                    }
+                    catch (Exception e) {
+                        echo "An error occurred: ${e.getMessage()}"
+                        error "Build failed due to an exception"
+                    }
+                }
             }
         }
 
