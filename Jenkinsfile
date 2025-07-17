@@ -39,13 +39,12 @@ pipeline {
 
         stage('Deploy') {
             steps {
-
                 script {
                     try {
                         timeout(time: 5, unit: 'MINUTES') {
                             env.useChoice = input message: "can it be deployed ?",
                             parameters: [
-                                choice(name: deploy, choices: 'No\nYes', description: 'Choose yes if you want to deploy the application')
+                                choice(name: 'deploy', choices: 'No\nYes', description: 'Choose yes if you want to deploy the application')
                             ]
                         }
                         if (env.useChoice == 'Yes') {
